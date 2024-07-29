@@ -1,0 +1,14 @@
+name: ThrowOut
+version: '${project.version}'
+main: com.floodeer.throwout.ThrowOut
+api-version: '1.20'
+dependencies:
+  - name: PlaceholderAPI
+    required: false
+  - name: Vault
+    required: false
+  - name: DecentHolograms
+    required: false
+  - name: HolographicDisplays
+    required: false
+authors: [Floodeer]
