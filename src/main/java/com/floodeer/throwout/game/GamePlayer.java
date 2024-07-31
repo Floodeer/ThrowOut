@@ -19,7 +19,7 @@ public class GamePlayer {
     private int wins, losses, gamesPlayed, kills, deaths, totalHitsReceived, totalHits, balance;
 
     @Setter
-    private boolean inGame, isSpectator;
+    private boolean inGame, isSpectator, hasMegaPunch;
 
     @Setter
     private Game game;
@@ -32,6 +32,8 @@ public class GamePlayer {
         this.player = ThrowOut.get().getServer().getPlayer(uuid);
         if(player != null)
             this.name = player.getName();
+
+        ThrowOut.get().getDataStorage().loadPlayer(uuid.toString(), this);
     }
 
 
@@ -40,6 +42,8 @@ public class GamePlayer {
         this.player = ThrowOut.get().getServer().getPlayer(name);
         if(player != null)
             this.uuid = player.getUniqueId();
+
+        ThrowOut.get().getDataStorage().loadPlayer(uuid.toString(), this);
     }
 
     public static GamePlayer get(String name) {

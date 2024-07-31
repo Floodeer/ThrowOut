@@ -34,8 +34,8 @@ public class Game implements Listener {
     private List<GamePlayer> players;
     private Map<GamePlayer, Integer> kills, deaths;
 
-    private int timeLeft;
-    @Getter @Setter
+    private int gameLength;
+    @Setter
     private boolean canStart;
 
     @Setter
@@ -59,6 +59,7 @@ public class Game implements Listener {
     public void loadGame() {
         players = Lists.newArrayList();
         kills = Maps.newHashMap();
+        gameLength = ThrowOut.get().getConfigOptions().gameLength;
         preStart = ThrowOut.get().getConfigOptions().preStartCountdown;
 
         ThrowOut.get().getServer().getPluginManager().registerEvents(this, ThrowOut.get());
@@ -70,8 +71,10 @@ public class Game implements Listener {
             return;
 
         if(getState() == GameState.IN_GAME) {
-            if(checkForWinner())
+            if(checkForWinner()) {
+                setState(GameState.ENDING);
                 return;
+            }
 
             updateGameScoreboard();
 
@@ -143,7 +146,7 @@ public class Game implements Listener {
             return true;
         }
 
-        if(timeLeft == 0) {
+        if(gameLength == 0) {
             Map.Entry<GamePlayer, Integer> killsEntry = kills.entrySet().stream()
                     .max(Map.Entry.comparingByValue())
                     .orElse(null);
@@ -194,7 +197,7 @@ public class Game implements Listener {
     }
 
     private void updateGameScoreboard() {
-        Date date = new Date(timeLeft * 1000L);
+        Date date = new Date(gameLength * 1000L);
         String timeLeft = new SimpleDateFormat("mm:ss").format(date);
 
         getPlayers().forEach(gp -> {

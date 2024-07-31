@@ -15,7 +15,9 @@ public enum ServerVersion {
     VERSION_17(755, "v1_17"),
     VERSION_118(757, "v1_18"),
     VERSION_19(759, "v1_19"),
-    VERSION_20(763, "v1_20");
+    VERSION_20(763, "v1_20"),
+    VERSION_20_6( 766, "v1_20_R4"),
+    VERSION_21(767, "v1_21");
 
     @Getter
     private final int protocol;
@@ -27,7 +29,9 @@ public enum ServerVersion {
     }
 
     public static ServerVersion getFromString(String nmsver) {
-        if (nmsver.startsWith("v1_9") || nmsver.startsWith("v1_10") || nmsver.startsWith("v1_11") || nmsver.startsWith("v1_12")) {
+        if(nmsver.startsWith("v1_20_R4")) {
+            return VERSION_20_6;
+        }else if (nmsver.startsWith("v1_9") || nmsver.startsWith("v1_10") || nmsver.startsWith("v1_11") || nmsver.startsWith("v1_12")) {
             return PRE_13;
         } else {
             String[] parts = nmsver.split("_");
@@ -36,10 +40,10 @@ public enum ServerVersion {
                 return Arrays.stream(ServerVersion.values())
                         .filter(cur -> cur.getNMSIdentifier().endsWith(versionNumber))
                         .findFirst()
-                        .orElse(VERSION_19);
+                        .orElse(VERSION_21);
             }
         }
-        return VERSION_19;
+        return VERSION_21;
     }
 
     public static boolean isLegacy() {

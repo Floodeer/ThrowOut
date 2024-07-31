@@ -1,5 +1,6 @@
 package com.floodeer.throwout.manager;
 
+import com.floodeer.throwout.ThrowOut;
 import com.floodeer.throwout.game.GamePlayer;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
@@ -49,33 +50,31 @@ public class PlayerManager {
     }
 
     public void shutdown() {
-        //TODO database
+        getAll().forEach(cur -> ThrowOut.get().getDataStorage().savePlayer(cur));
         onlinePlayers.clear();
     }
 
     public void restart() {
-        for(GamePlayer gp : getAll()) {
-            //TODO database
-        }
-        onlinePlayers.clear();
+        shutdown();
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             addPlayer(player.getUniqueId());
         }
     }
 
     public void updateAll() {
-        //TODO database
+        getAll().forEach(cur -> ThrowOut.get().getDataStorage().savePlayer(cur));
     }
 
     public void updateAllAsync() {
-        //TODO database
+        getAll().forEach(cur -> ThrowOut.get().getDataStorage().savePlayerAsync(cur));
     }
 
     public void update(GamePlayer gp) {
-        //TODO database
+       ThrowOut.get().getDataStorage().savePlayer(gp);
     }
 
     public void updateAsync(GamePlayer gp) {
-        //TODO database
+        ThrowOut.get().getDataStorage().savePlayerAsync(gp);
     }
 }
